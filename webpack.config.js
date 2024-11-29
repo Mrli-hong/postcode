@@ -20,9 +20,7 @@ const baseConfig = (webpackEnv) => {
   return {
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     bail: isEnvProduction,
-    devtool: isEnvProduction
-      ? "source-map"
-      : isEnvDevelopment && "eval-cheap-module-source-map",
+    devtool: "eval-source-map",
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "webview/"),

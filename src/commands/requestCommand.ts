@@ -139,8 +139,7 @@ export default function (
         validateStatus: () => true,
       })
         .then((resp) =>
-          panel.webview.postMessage({
-            type: "response",
+          invokeCallback(panel, message, {
             data: resp.data,
             status: resp.status,
             statusText: resp.statusText,
@@ -149,10 +148,10 @@ export default function (
           })
         )
         .catch((err) => {
-          panel.webview.postMessage({
-            type: "response",
+          invokeCallback(panel, message, {
             error: err,
           });
+
           vscode.window.showInformationMessage("Error: Could not send request");
         });
     },
