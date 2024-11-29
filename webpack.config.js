@@ -24,6 +24,9 @@ const baseConfig = (webpackEnv) => {
       ? "source-map"
       : isEnvDevelopment && "eval-cheap-module-source-map",
     resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "webview/"),
+      },
       fallback: {
         buffer: require.resolve("buffer"),
         path: require.resolve("path-browserify"),

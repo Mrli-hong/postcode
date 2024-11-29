@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Url } from "postman-collection";
-import vscode from "../../vscode";
+import { callVscode } from "../../utils/vscode";
 import { RequestMethodSelector } from "../../features/requestMethod/RequestMethodSelector";
 import { RequestUrl } from "../../features/requestUrl/RequestUrl";
 import { responseLoadingStarted } from "../../features/response/responseSlice";
@@ -11,6 +11,7 @@ import { selectRequestUrl } from "../../features/requestUrl/requestUrlSlice";
 import { selectRequestMethod } from "../../features/requestMethod/requestMethodSlice";
 import { selectRequestOptions } from "../../features/requestOptions/requestOptionsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { responseUpdated } from "../../features/response/responseSlice";
 import "./styles.css";
 
 export const RequestBar = () => {
@@ -29,14 +30,20 @@ export const RequestBar = () => {
       onSubmit={(e) => {
         dispatch(responseLoadingStarted());
         const { protocol } = Url.parse(requestUrl);
-        vscode.postMessage({
-          method: requestMethod,
-          auth: requestAuth,
-          body: requestBody,
-          headers: requestHeaders,
-          url: protocol ? requestUrl : `http://${requestUrl}`,
-          options: requestOptions,
-        });
+        callVscode(
+          {
+            cmd: "request",
+            data: {
+              method: requestMethod,
+              auth: requestAuth,
+              body: requestBody,
+              headers: requestHeaders,
+              url: protocol ? requestUrl : `http://${requestUrl}`,
+              options: requestOptions,
+            },
+          },
+          (event) => dispatch(responseUpdated(event.data))
+        );
         e.preventDefault();
       }}
     >

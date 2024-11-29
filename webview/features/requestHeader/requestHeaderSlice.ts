@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
-interface Header {
+export interface Header {
   key: string;
   value: string;
   description: string;
